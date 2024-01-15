@@ -10,6 +10,11 @@
       "StackName": "amplify-terraiot-dev-163439",
       "StackId": "arn:aws:cloudformation:us-east-2:647724249007:stack/amplify-terraiot-dev-163439/e8b3fe40-b380-11ee-ad06-06de79b437ff",
       "AmplifyAppId": "d2jsk2mo07mxk1"
+    },
+    "categories": {
+      "auth": {
+        "terraiot7b82045f": {}
+      }
     }
   }
 }
