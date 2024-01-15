@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-terraiot-dev-163439-authRole",
+      "UnauthRoleArn": "arn:aws:iam::647724249007:role/amplify-terraiot-dev-163439-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::647724249007:role/amplify-terraiot-dev-163439-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-terraiot-dev-163439-deployment",
+      "UnauthRoleName": "amplify-terraiot-dev-163439-unauthRole",
+      "StackName": "amplify-terraiot-dev-163439",
+      "StackId": "arn:aws:cloudformation:us-east-2:647724249007:stack/amplify-terraiot-dev-163439/e8b3fe40-b380-11ee-ad06-06de79b437ff",
+      "AmplifyAppId": "d2jsk2mo07mxk1"
+    }
+  }
+}
