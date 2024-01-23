@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "terraiot7b82045f": {}
+        "terraiota0d9cbd0": {},
+        "userPoolGroups": {}
       }
     }
   }

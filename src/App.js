@@ -1,57 +1,107 @@
-import './App.css';
 import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports'
-import '@aws-amplify/ui-react/styles.css';
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
-import { getData } from "./graphql/queries";
+import '@aws-amplify/ui-react/styles.css';
 import { generateClient } from 'aws-amplify/api';
-import { useState } from 'react';
 import React from 'react';
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Box, Typography, MenuItem, Menu, } from "@mui/material";
+import Topbar from "./scenes/global/Topbar";
+import Sidebar from "./scenes/global/Sidebar";
+import Dashboard from "./scenes/dashboard";
+import Air_temp from "./scenes/air_temp";
+import CO2 from "./scenes/co2";
+import O2 from "./scenes/o2";
+import Humidity from "./scenes/humidity";
+import Water_temp from "./scenes/water_temp";
+import Conductivity from "./scenes/conductivity";
+import PH from "./scenes/pH";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import { CssBaseline, IconButton, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import { tokens } from "././theme";
+import Calendar from "./scenes/calendar/calendar";
+
 
 Amplify.configure(awsExports);
 
-function App({ signOut, user }) {
+function App({ signOut, user}) {
 
-  const [data, setData] = useState(null);
+  const [theme, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
+  const colors = tokens(theme.palette.mode);
 
-  const client = generateClient();
-
-  const getSensorData = async() => {
-    //make a call to appsync api
-    //timestamp: 2023-11-01T21:31:06Z
-    const data = await client.graphql({
-      query : getData,
-      variables: { MAC : 1073446240, timestamp : "2023-11-01T21:31:24Z"}
-   });
-   debugger;
-   setData(data.data.getData);
-  }
-
-  const viewData = () => {
-    if (data) {
-      return (<article>
-        <h3>{data.timestamp}</h3>
-        <p>{data.CO2}</p>
-        <p>{data.O2}</p>
-        <p>{data.atm_temperature}</p>
-        <p>{data.conductivity}</p>
-        <p>{data.humidity}</p>
-        <p>{data.pH}</p>
-        <p>{data.temperature}</p>
-        <h3>{data.MAC}</h3>
-      </article>)
-    }
-  }
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <div>
-    <h1>Hello, {user.username}</h1>
-     <button onClick={signOut}>Sign out</button>
-     <button onClick={()=>getSensorData()}>Get Data</button>
-     <hr/>
-    {viewData()}
-    </div>
+    
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <Sidebar isSidebar={isSidebar} />
+          <main className="content">
+            <Topbar setIsSidebar={setIsSidebar} />
+              <IconButton
+                style ={{ position: "absolute", top: "16px", right: "15px" }} IconComponent={PersonOutlinedIcon}
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                <PersonOutlinedIcon/>
+                </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                <MenuItem onClick={signOut}>Sign Out</MenuItem>
+              </Menu>
+
+              {/* <Box textAlign="center">
+                <Typography
+                  variant="h2"
+                  color={colors.grey[100]}
+                  fontWeight="bold"
+                  sx={{ m: "10px 0 0 0" }}
+                >
+                  {user.username}
+                </Typography>
+                <Typography variant="h5" color={colors.greenAccent[500]}>
+                  Administrator
+                </Typography>
+              </Box> */}
+
+
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/air_temp" element={<Air_temp />} />
+              <Route path="/co2" element={<CO2 />} />
+              <Route path="/o2" element={<O2 />} />
+              <Route path="/humidity" element={<Humidity />} />
+              <Route path="/water_temp" element={<Water_temp />} />
+              <Route path="/conductivity" element={<Conductivity />} />
+              <Route path="/pH" element={<PH />} />
+              <Route path="/calendar" element={<Calendar />} />
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 

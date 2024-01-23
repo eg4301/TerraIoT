@@ -2,7 +2,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const getData = /* GraphQL */ `
-  query GetData($MAC: String!, $timestamp: String!) {
+  query GetData($MAC: Int!, $timestamp: String!) {
     getData(MAC: $MAC, timestamp: $timestamp) {
       MAC
       timestamp
@@ -38,7 +38,7 @@ export const allData = /* GraphQL */ `
   }
 `;
 export const allDatasByMAC = /* GraphQL */ `
-  query AllDatasByMAC($MAC: String!, $limit: Int, $nextToken: String) {
+  query AllDatasByMAC($MAC: Int!, $limit: Int, $nextToken: String) {
     allDatasByMAC(MAC: $MAC, limit: $limit, nextToken: $nextToken) {
       Datas {
         MAC
@@ -86,7 +86,7 @@ export const allDatasBytimestamp = /* GraphQL */ `
   }
 `;
 export const allDataD = /* GraphQL */ `
-  query AllDataD($MAC: String!, $limit: Int, $nextToken: String) {
+  query AllDataD($MAC: Int!, $limit: Int, $nextToken: String) {
     allDataD(MAC: $MAC, limit: $limit, nextToken: $nextToken) {
       Datas {
         MAC

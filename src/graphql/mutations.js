@@ -3,7 +3,7 @@
 
 export const addData = /* GraphQL */ `
   mutation AddData(
-    $MAC: String!
+    $MAC: Int!
     $timestamp: String!
     $atm_temperature: Float
     $CO2: Float
@@ -38,7 +38,7 @@ export const addData = /* GraphQL */ `
   }
 `;
 export const deleteData = /* GraphQL */ `
-  mutation DeleteData($MAC: String!, $timestamp: String!) {
+  mutation DeleteData($MAC: Int!, $timestamp: String!) {
     deleteData(MAC: $MAC, timestamp: $timestamp) {
       MAC
       timestamp
@@ -55,7 +55,7 @@ export const deleteData = /* GraphQL */ `
 `;
 export const updateData = /* GraphQL */ `
   mutation UpdateData(
-    $MAC: String!
+    $MAC: Int!
     $timestamp: String!
     $atm_temperature: Float
     $CO2: Float

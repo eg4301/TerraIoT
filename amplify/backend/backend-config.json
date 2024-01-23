@@ -1,7 +1,7 @@
 {
   "api": {},
   "auth": {
-    "terraiot7b82045f": {
+    "terraiota0d9cbd0": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -24,6 +24,22 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "terraiota0d9cbd0"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
     }
   }
 }
