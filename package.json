@@ -7,6 +7,7 @@
     "@aws-amplify/ui-react": "^6.1.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@ericz1803/react-google-calendar": "^4.3.2",
     "@fullcalendar/core": "^5.11.3",
     "@fullcalendar/daygrid": "^5.11.3",
     "@fullcalendar/interaction": "^5.11.3",
@@ -24,6 +25,7 @@
     "@nivo/line": "^0.84.0",
     "@nivo/pie": "^0.84.0",
     "@reduxjs/toolkit": "^1.8.5",
+    "@syncfusion/ej2-react-popups": "^24.1.46",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -69,8 +71,9 @@
     ]
   },
   "devDependencies": {
+    "@types/whatwg-fetch": "^0.0.33",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.6",
-    "tailwindcss": "^3.0.19"
+    "tailwindcss": "^3.4.1"
   }
 }

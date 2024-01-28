@@ -1,6 +1,7 @@
 import './App.css';
 import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports'
+import { generateClient } from 'aws-amplify/api';
 import '@aws-amplify/ui-react/styles.css';
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
@@ -18,50 +19,21 @@ function App({ signOut, user }) {
 
   const client = generateClient();
 
+  const delayInMilliseconds = 5000;
+
   const getSensorData = async() => {
     
-  //   const data = await client.graphql({ 
-  //     query: queries.allData, 
-  //     variables: { limit : 25 } 
-  //   });
-  //   setData = (sensordata.push(data.allData))
-  //   console.log(data.length);
-  //   console.log(Object.getPrototypeOf(data));
-  //   // for (const [key, value] of Object.entries(data)) {
-  //   //   console.log(`${key}: ${value}`);
-  //   // }
-  //   // debugger;
-  //   // setData = (data.data.allData)
-  // };
-
-
-  //   make a call to appsync api
-  //   timestamp: 2023-11-01T21:31:06Z
     const data = await client.graphql({
-      query : queries.allData,
+      query : queries.allDatasByMAC_pH,
       // variables: { MAC : 1073446240, timestamp : "2024-01-18T14:42:35Z"}
-      variables: { limit : 25 }
+      variables: { MAC: 1, limit : 25 }
    });
-   setData(data.data.getData);
-   console.log(data.length)
+
+   setTimeout (function() {
+    console.log(data)
+   }, delayInMilliseconds);
   }
 
-  const viewData = () => {
-    if (data) {
-      return (<article>
-        <h3>{data.timestamp}</h3>
-        <p>{data.CO2}</p>
-        <p>{data.O2}</p>
-        <p>{data.atm_temperature}</p>
-        <p>{data.conductivity}</p>
-        <p>{data.humidity}</p>
-        <p>{data.pH}</p>
-        <p>{data.temperature}</p>
-        <h3>{data.MAC}</h3>
-        {data[0]}
-      </article>)
-    }
-  }
 
   return (
     <div>
@@ -70,7 +42,6 @@ function App({ signOut, user }) {
      <button onClick={()=>getSensorData()}>Get Data</button>
      <Button variant = "contained">getSensorData</Button>
      <hr/>
-    {viewData()}
     </div>
   );
 }

@@ -105,3 +105,16 @@ export const allDataD = /* GraphQL */ `
     }
   }
 `;
+export const allDatasByMAC_pH = /* GraphQL */ `
+  query AllDatasByMAC_pH($MAC: Int!, $limit: Int, $nextToken: String) {
+    allDatasByMAC_pH(MAC: $MAC, limit: $limit, nextToken: $nextToken) {
+      Datas {
+        timestamp
+        pH
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;

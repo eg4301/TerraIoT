@@ -21,7 +21,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
-        <Box>
+        {/* <Box>
           <Button style={{ position: "absolute", top: "105px", left: "520px" }}
             sx={{
               backgroundColor: colors.blueAccent[700],
@@ -34,7 +34,7 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Dashboard
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}

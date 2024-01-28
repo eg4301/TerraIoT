@@ -1,5 +1,3 @@
-import { Amplify } from 'aws-amplify';
-import awsExports from '../../aws-exports'
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
@@ -16,8 +14,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import WaterOutlinedIcon from '@mui/icons-material/WaterOutlined';
 import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
 import BatterySaverOutlinedIcon from '@mui/icons-material/BatterySaverOutlined';
-
-Amplify.configure(awsExports)
+import GoogleIcon from '@mui/icons-material/Google';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -71,7 +68,7 @@ const Sidebar = () => {
             align = 'center'
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "10px 0 20px 0",
+              margin: "10px 0 30px 0",
               color: colors.grey[100],
             }}
           >
@@ -82,15 +79,8 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="0px"
               >
-                <img
-                  alt="profile-user"
-                  width="80px"
-                  height="80px"
-                  src={`../../assets/TerraIoT.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
                 <Typography variant="h4" color={colors.grey[100]}>
-                  TerraIoT
+                  v1.0
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -100,13 +90,13 @@ const Sidebar = () => {
           </MenuItem>
 
           {!isCollapsed && (
-            <Box mb="25px">
+            <Box mb="50px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/Ting.png`}
+                  src={`../../assets/TerraIoT.png`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -115,12 +105,12 @@ const Sidebar = () => {
                   variant="h2"
                   color={colors.grey[100]}
                   fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
+                  sx={{ m: "20px 0 0 0" }}
                 >
-                  EG4301
+                  TerraIoT
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Administrator
+                  Future of Smart Farming
                 </Typography>
               </Box>
             </Box>
@@ -141,20 +131,32 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+              <Item
+              title="Google Calendar"
+              to="/google_calendar"
+              icon={<GoogleIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
 
+            {!isCollapsed && (
             <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px", fontSize: 15 }}
             >
               Ambient Charts
-            </Typography>
+            </Typography> )}
+
             <Item
               title="Air Temperature"
               to="/air_temp"
               icon={<DeviceThermostatOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              style={{
+                margin: "50px 0 0px 0",
+                color: colors.grey[100],}}
             />
             <Item
               title="CO2"
@@ -177,6 +179,8 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            {!isCollapsed && (
               <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -184,7 +188,8 @@ const Sidebar = () => {
               // align = "center"
             >
               Water Charts
-            </Typography>
+            </Typography> )}
+
             <Item
               title="Water Temperature"
               to="/water_temp"
