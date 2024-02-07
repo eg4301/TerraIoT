@@ -5,11 +5,10 @@ import { css } from "@emotion/react";
 
 import { Box, useTheme, TextField, IconButton } from "@mui/material";
 import { ColorModeContext, tokens } from "../../theme";
-import { ObjectSchema } from "yup";
 
 
 //put your google calendar api key here
-const API_KEY = "AIzaSyAtD4GE6lVWDUy4YriPnBh1x85gjigcj7A";
+let API_KEY = 'AIzaSyAtD4GE6lVWDUy4YriPnBh1x85gjigcj7A'
 
 //replace calendar id with one you want to test
 
@@ -32,27 +31,22 @@ let styles = {
   `,
 };
 
- 
 
 const Google_Calendar = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState([]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       // console.log(event.target.value);
       setValue(event.target.value)
-      
+      API_KEY = event.target.value
     }
   };
 
-  // var key = Object.keys({value})[0]
-
-  // const api_key = {value}[key]
-
-  // console.log(api_key)
+  console.log(API_KEY)
 
   return (
 
@@ -64,16 +58,10 @@ const Google_Calendar = () => {
           backgroundColor={colors.primary[400]}
           borderRadius="3px"
         >
-              <input
-        type="text"
-        id="message"
-        name="message"
-        onKeyDown={handleKeyDown}
-      />
-          {/* <TextField value = {value} id="outlined-basic" label="Google API Key" variant="outlined" sx={{width:'300px'}} onKeyown={handlekeyDown}/> */}
         </Box>
       </Box>
       <body>
+        
         <div
           style={{
             width: "90%",
@@ -83,10 +71,12 @@ const Google_Calendar = () => {
             maxWidth: "1200px",
           }}
         >
+          
           <Calendar apiKey={API_KEY} calendars={calendars} styles={styles} />
         </div>
       </body>
     </div>
+    
   );
 }
 

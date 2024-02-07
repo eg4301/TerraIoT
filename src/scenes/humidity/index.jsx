@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import HumidityChart from "../../components/HumidityChart";
+import HumidityChart from "../../charts/HumidityChart";
 
 const Humidity = () => {
   return (

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import CO2_chart from "../../components/CO2_Chart";
+import CO2_chart from "../../charts/CO2_Chart";
 
 const CO2 = () => {
   return (

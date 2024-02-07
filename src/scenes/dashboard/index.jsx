@@ -1,15 +1,13 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import Header from "../../components/Header";
-import AirTempChart from "../../components/AirTempChart";
-import CO2_Chart from "../../components/CO2_Chart";
-import O2_Chart from "../../components/O2_Chart";
-import HumidityChart from "../../components/HumidityChart";
-import WaterTempChart from "../../components/WaterTempChart";
-import ConductivityChart from "../../components/ConductivityChart";
-import PH_Chart from "../../components/pH_Chart";
+import AirTempChart from "../../charts/AirTempChart";
+import CO2_Chart from "../../charts/CO2_Chart";
+import O2_Chart from "../../charts/O2_Chart";
+import HumidityChart from "../../charts/HumidityChart";
+import WaterTempChart from "../../charts/WaterTempChart";
+import ConductivityChart from "../../charts/ConductivityChart";
+// import { PH_Chart } from "../../App";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -20,21 +18,6 @@ const Dashboard = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        {/* <Box>
-          <Button style={{ position: "absolute", top: "105px", left: "520px" }}
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Dashboard
-          </Button>
-        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}
@@ -306,7 +289,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <PH_Chart isDashboard={true} />
+            {/* <PH_Chart isDashboard={true} /> */}
           </Box>
         </Box>
       </Box>

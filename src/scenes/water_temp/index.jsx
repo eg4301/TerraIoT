@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import WaterTempChart from "../../components/WaterTempChart";
+import WaterTempChart from "../../charts/WaterTempChart";
 
 const Water_temp = () => {
   return (

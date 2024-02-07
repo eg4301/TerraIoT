@@ -7,7 +7,7 @@ import { generateClient } from 'aws-amplify/api';
 
 // IMport React Packaages
 import React from 'react';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Import scene constants
@@ -39,14 +39,16 @@ import NotificationsOffOutlinedIcon from '@mui/icons-material/NotificationsOffOu
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 
+// Import Queries
+import * as queries from "./graphql/queries"
 
 Amplify.configure(awsExports);
 
-function App({ signUp, signOut, user}) {
+
+function App({ signOut, user}) {
 
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
-  const colors = tokens(theme.palette.mode);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -59,6 +61,26 @@ function App({ signUp, signOut, user}) {
   const [clicked, setClicked] = useState();
 
 
+  const client = generateClient();
+
+  async function getSensorData() {
+    
+    const pH_data = await client.graphql({
+      query : queries.allDatasByMAC_pH,
+      // variables: { MAC : 1073446240, timestamp : "2024-01-18T14:42:35Z"}
+      variables: { MAC: 1, limit : 25 }
+   });
+  
+   const pHdata = []
+
+   for (let i = 0; i < pH_data.data.allDatasByMAC_pH.Datas.length; i++) {
+      pHdata.push([Date.parse(Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[0]), Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[1]])
+   }
+
+  //  data['widget'] = [{"data" : {pHdata}, "display" : "absolute"},{},{},{},{}]
+
+  }
+
   return (
     
     <ColorModeContext.Provider value={colorMode}>
@@ -67,7 +89,7 @@ function App({ signUp, signOut, user}) {
         <div className="app">
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />              
+            <Topbar setIsSidebar={setIsSidebar} />       
               <Tooltip title = 'Notifications' style = {{ position: "absolute", top: "27px", right: "230px" }} arrow>
                 <IconButton onClick={() => setClicked((prev) => !prev)}>
                   {clicked ? <NotificationsOffOutlinedIcon /> : <NotificationsOutlinedIcon/>}

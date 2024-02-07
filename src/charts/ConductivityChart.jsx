@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { mockLineData as data } from "../data/mockData";
 
-const PH_Chart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -44,7 +44,7 @@ const PH_Chart = ({ isCustomLineColors = false, isDashboard = false }) => {
         },
       }}
       colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
@@ -114,4 +114,4 @@ const PH_Chart = ({ isCustomLineColors = false, isDashboard = false }) => {
   );
 };
 
-export default PH_Chart;
+export default LineChart;

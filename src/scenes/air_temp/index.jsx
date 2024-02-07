@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import AirTempChart from "../../components/AirTempChart";
+import AirTempChart from "../../charts/AirTempChart";
 
 const Air_temp = () => {
   return (
