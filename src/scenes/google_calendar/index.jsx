@@ -8,13 +8,13 @@ import { ColorModeContext, tokens } from "../../theme";
 
 
 //put your google calendar api key here
-let API_KEY = 'AIzaSyAtD4GE6lVWDUy4YriPnBh1x85gjigcj7A'
+// API_KEY - 'AIzaSyAtD4GE6lVWDUy4YriPnBh1x85gjigcj7A'
+const API_KEY = {API_KEY: ''}
 
 //replace calendar id with one you want to test
 
-let calendars = [
-  { calendarId: "en.singapore#holiday@group.v.calendar.google.com" },
-];
+// CalendarID - en.singapore#holiday@group.v.calendar.google.com
+// let calendars = [{ calendarId: "en.singapore#holiday@group.v.calendar.google.com"}];
 
 let styles = {
   //you can use object styles
@@ -37,16 +37,26 @@ const Google_Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [value, setValue] = useState([]);
+  const [id, setid] = useState([{ calendarId: ""}])
 
-  const handleKeyDown = (event) => {
+  const handleAPIKeyDown = (event) => {
     if (event.key === 'Enter') {
       // console.log(event.target.value);
       setValue(event.target.value)
-      API_KEY = event.target.value
-    }
-  };
+    };
+  }
 
-  console.log(API_KEY)
+  const handleCalendarKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      const val = event.target.value
+      setid([{calendarId : {val}}])
+    };
+  }
+
+
+  // console.log(API_KEY)
+  console.log(value)
+  console.log(id)
 
   return (
 
@@ -61,7 +71,8 @@ const Google_Calendar = () => {
         </Box>
       </Box>
       <body>
-        
+      <TextField autoComplete = "off" id="outlined-basic" fullwidth label="Google API Key" variant="outlined" onKeyDown={handleAPIKeyDown}/>
+      <TextField autoComplete = "off" id="outlined-basic" fullwidth label="Google Calendar ID" variant="outlined" onKeyDown={handleCalendarKeyDown}/>
         <div
           style={{
             width: "90%",
@@ -71,8 +82,7 @@ const Google_Calendar = () => {
             maxWidth: "1200px",
           }}
         >
-          
-          <Calendar apiKey={API_KEY} calendars={calendars} styles={styles} />
+          <Calendar apiKey={value} calendars={id} styles={styles} />
         </div>
       </body>
     </div>

@@ -7,6 +7,7 @@ import { generateClient } from 'aws-amplify/api';
 
 // IMport React Packaages
 import React from 'react';
+import { Button } from '@aws-amplify/ui-react';
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -44,6 +45,7 @@ import * as queries from "./graphql/queries"
 
 Amplify.configure(awsExports);
 
+const data = {}
 
 function App({ signOut, user}) {
 
@@ -60,7 +62,6 @@ function App({ signOut, user}) {
   };
   const [clicked, setClicked] = useState();
 
-
   const client = generateClient();
 
   async function getSensorData() {
@@ -74,10 +75,10 @@ function App({ signOut, user}) {
    const pHdata = []
 
    for (let i = 0; i < pH_data.data.allDatasByMAC_pH.Datas.length; i++) {
-      pHdata.push([Date.parse(Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[0]), Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[1]])
+      pHdata.push([Date.parse(Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[0]), Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[1].toFixed(5)])
    }
-
-  //  data['widget'] = [{"data" : {pHdata}, "display" : "absolute"},{},{},{},{}]
+   data['widget'] = [{"data" : {pHdata}, "display" : "absolute"},{},{},{},{}]
+  //  console.log(data.widget[0].data.pHdata)
 
   }
 
@@ -89,7 +90,8 @@ function App({ signOut, user}) {
         <div className="app">
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />       
+            <Topbar setIsSidebar={setIsSidebar} />   
+            {/* <button onClick={getSensorData}>GetData</button>     */}
               <Tooltip title = 'Notifications' style = {{ position: "absolute", top: "27px", right: "230px" }} arrow>
                 <IconButton onClick={() => setClicked((prev) => !prev)}>
                   {clicked ? <NotificationsOffOutlinedIcon /> : <NotificationsOutlinedIcon/>}

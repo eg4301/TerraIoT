@@ -7,7 +7,7 @@ import O2_Chart from "../../charts/O2_Chart";
 import HumidityChart from "../../charts/HumidityChart";
 import WaterTempChart from "../../charts/WaterTempChart";
 import ConductivityChart from "../../charts/ConductivityChart";
-// import { PH_Chart } from "../../App";
+import GetpHData from "../../charts/pH";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -288,8 +288,8 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            {/* <PH_Chart isDashboard={true} /> */}
+          <Box height="250px" m="0px 0 0 0">
+            <GetpHData isDashboard={true} />
           </Box>
         </Box>
       </Box>
