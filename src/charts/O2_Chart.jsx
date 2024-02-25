@@ -1,117 +1,352 @@
-import { ResponsiveLine } from "@nivo/line";
-import { useTheme } from "@mui/material";
-import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+// Import React Libraries
+import React from "react";
+import { TimeSeries, TimeRange } from "pondjs";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+// Import Components
+import ChartContainer from "../components/ChartContainer";
+import ChartRow from "../components/ChartRow";
+import Charts from "../components/Charts";
+import YAxis from "../components/YAxis";
+import LineChart from "../components/LineChart";
+import ScatterChart from "../components/ScatterChart"
+import Baseline from "../components/Baseline";
+import Resizable from "../components/Resizable";
+import EventMarker from "../components/EventMarker"
 
-  return (
-    <ResponsiveLine
-      data={data}
-      theme={{
-        axis: {
-          domain: {
-            line: {
-              stroke: colors.grey[100],
-            },
-          },
-          legend: {
-            text: {
-              fill: colors.grey[100],
-            },
-          },
-          ticks: {
-            line: {
-              stroke: colors.grey[100],
-              strokeWidth: 1,
-            },
-            text: {
-              fill: colors.grey[100],
-            },
-          },
-        },
-        legends: {
-          text: {
-            fill: colors.grey[100],
-          },
-        },
-        tooltip: {
-          container: {
-            color: colors.primary[500],
-          },
-        },
-      }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "point" }}
-      yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
-        stacked: true,
-        reverse: false,
-      }}
-      yFormat=" >-.2f"
-      curve="catmullRom"
-      axisTop={null}
-      axisRight={null}
-      axisBottom={{
-        orient: "bottom",
-        tickSize: 0,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
-        legendOffset: 36,
-        legendPosition: "middle",
-      }}
-      axisLeft={{
-        orient: "left",
-        tickValues: 5, // added
-        tickSize: 3,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
-        legendOffset: -40,
-        legendPosition: "middle",
-      }}
-      enableGridX={false}
-      enableGridY={false}
-      pointSize={8}
-      pointColor={{ theme: "background" }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
-      pointLabelYOffset={-12}
-      useMesh={true}
-      legends={[
-        {
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 100,
-          translateY: 0,
-          itemsSpacing: 0,
-          itemDirection: "left-to-right",
-          itemWidth: 80,
-          itemHeight: 20,
-          itemOpacity: 0.75,
-          symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
-      ]}
-    />
-  );
-};
+// Import O2 Data
+import { O2_data } from "../api_query";
 
-export default LineChart;
+export function GetO2Data() {
+    // const [data, setData] = useState({'widget':[{'data':{'O2':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]})
+    // const data = {'widget':[{'data':{'O2':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
+    if (O2_data.widget != undefined) {
+    const data = O2_data
+    const points = data.widget[0].data.O2
+    const series = new TimeSeries({
+        columns: ["time", "value"],
+        points
+    });
+
+    const style = {
+        value: {
+            stroke: "#a02c2c",
+            opacity: 0.2
+        }
+    };
+
+    const baselineStyle = {
+        line: {
+            stroke: "#32d15d",
+            strokeWidth: 1,
+            opacity: 0.4,
+            strokeDasharray: "none"
+        },
+        label: {
+            fill: "#32d15d"
+        }
+    };
+
+    const baselineStyleLite = {
+        line: {
+            stroke: "#32d15d",
+            strokeWidth: 1,
+            opacity: 0.5
+        },
+        label: {
+            fill: "#32d15d"
+        }
+    };
+
+    const NullMarker = props => {
+        return <g />;
+    };
+
+    return (
+        class O2_Chart extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    timerange: new TimeRange([1236985288649, 1326654398343]),
+                    tracker: null,
+                    trackerEvent: null,
+                    // markerMode: "flag"
+                };
+            }
+
+            handleTrackerChanged = t => {
+                if (t) {
+                    const e = series.atTime(t);
+                    const eventTime = new Date(
+                        e.begin().getTime() + (e.end().getTime() - e.begin().getTime()) / 2
+                    );
+                    const eventValue = e.get("value");
+                    const v = `${eventValue > 0 ? "+" : ""}${eventValue}`;
+                    this.setState({ tracker: eventTime, trackerValue: v, trackerEvent: e });
+                } else {
+                    this.setState({ tracker: null, trackerValue: null, trackerEvent: null });
+                }
+            };
+
+            handleTimeRangeChange = timerange => {
+                this.setState({ timerange });
+            };
+
+            renderMarker = () => {
+                if (!this.state.tracker) {
+                    return <NullMarker />;
+                }
+                if (this.state.markerMode === "flag") {
+                    return (
+                        <EventMarker
+                            type="flag"
+                            axis="O2"
+                            event={this.state.trackerEvent}
+                            column="value"
+                            info={[{ label: "Anomaly", value: this.state.trackerValue }]}
+                            infoTimeFormat="%Y"
+                            infoWidth={120}
+                            markerRadius={2}
+                            markerStyle={{ fill: "black" }}
+                        />
+                    );
+                } else {
+                    return (
+                        <EventMarker
+                            type="point"
+                            axis="O2"
+                            event={this.state.trackerEvent}
+                            column="value"
+                            markerLabel={this.state.trackerValue}
+                            markerLabelAlign="left"
+                            markerLabelStyle={{ fill: "#2db3d1"}}
+                            markerRadius={3}
+                            markerStyle={{ fill: "#2db3d1" }}
+                        />
+                    );
+                }
+            };
+
+            render() {
+                const { timerange } = this.state;
+                const croppedSeries = series.crop(timerange);
+                return (
+                    <Resizable>
+                        <ChartContainer
+                            enablePanZoom={true}
+                            timeRange={timerange}
+                            onTimeRangeChanged={this.handleTimeRangeChange}
+                            onTrackerChanged={this.handleTrackerChanged}
+                            format="%b '%y"
+                            // timeAxisTickCount={5}
+                        >
+                            <ChartRow height = "180">
+                                <YAxis
+                                    id="O2"
+                                    label="O2"
+                                    min={croppedSeries.min("value")}
+                                    max={croppedSeries.max("value")}
+                                    width="60"
+                                    format=".2f"
+                                />
+                                <Charts>
+                                    <ScatterChart axis="O2" series={croppedSeries} style={style} />
+                                    <LineChart axis='O2' series = {croppedSeries} style={style} />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyleLite}
+                                        value={croppedSeries.max()}
+                                        label="Max"
+                                        position="right"
+                                    />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyleLite}
+                                        value={croppedSeries.min()}
+                                        label="Min"
+                                        position="right"
+                                    />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyle}
+                                        value={croppedSeries.avg()}
+                                        label="Avg"
+                                        position="right"
+                                    />
+                                    {this.renderMarker()}
+                                </Charts>
+                            </ChartRow>
+                        </ChartContainer>
+                    </Resizable>
+                    );
+                }
+            }
+        )
+    }
+    else {
+    const data = {'widget':[{'data':{'O2':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
+    const points = data.widget[0].data.O2
+    const series = new TimeSeries({
+        columns: ["time", "value"],
+        points
+    });
+
+    const style = {
+        value: {
+            stroke: "#a02c2c",
+            opacity: 0.2
+        }
+    };
+
+    const baselineStyle = {
+        line: {
+            stroke: "#32d15d",
+            strokeWidth: 1,
+            opacity: 0.4,
+            strokeDasharray: "none"
+        },
+        label: {
+            fill: "#32d15d"
+        }
+    };
+
+    const baselineStyleLite = {
+        line: {
+            stroke: "#32d15d",
+            strokeWidth: 1,
+            opacity: 0.5
+        },
+        label: {
+            fill: "#32d15d"
+        }
+    };
+
+    const NullMarker = props => {
+        return <g />;
+    };
+
+    return (
+        class O2_Chart extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    timerange: new TimeRange([1236985288649, 1326654398343]),
+                    tracker: null,
+                    trackerEvent: null,
+                    // markerMode: "flag"
+                };
+            }
+
+            handleTrackerChanged = t => {
+                if (t) {
+                    const e = series.atTime(t);
+                    const eventTime = new Date(
+                        e.begin().getTime() + (e.end().getTime() - e.begin().getTime()) / 2
+                    );
+                    const eventValue = e.get("value");
+                    const v = `${eventValue > 0 ? "+" : ""}${eventValue}`;
+                    this.setState({ tracker: eventTime, trackerValue: v, trackerEvent: e });
+                } else {
+                    this.setState({ tracker: null, trackerValue: null, trackerEvent: null });
+                }
+            };
+
+            handleTimeRangeChange = timerange => {
+                this.setState({ timerange });
+            };
+
+            renderMarker = () => {
+                if (!this.state.tracker) {
+                    return <NullMarker />;
+                }
+                if (this.state.markerMode === "flag") {
+                    return (
+                        <EventMarker
+                            type="flag"
+                            axis="O2"
+                            event={this.state.trackerEvent}
+                            column="value"
+                            info={[{ label: "Anomaly", value: this.state.trackerValue }]}
+                            infoTimeFormat="%Y"
+                            infoWidth={120}
+                            markerRadius={2}
+                            markerStyle={{ fill: "black" }}
+                        />
+                    );
+                } else {
+                    return (
+                        <EventMarker
+                            type="point"
+                            axis="O2"
+                            event={this.state.trackerEvent}
+                            column="value"
+                            markerLabel={this.state.trackerValue}
+                            markerLabelAlign="left"
+                            markerLabelStyle={{ fill: "#2db3d1"}}
+                            markerRadius={3}
+                            markerStyle={{ fill: "#2db3d1" }}
+                        />
+                    );
+                }
+            };
+
+            render() {
+                const { timerange } = this.state;
+                const croppedSeries = series.crop(timerange);
+                return (
+                    <Resizable>
+                        <ChartContainer
+                            enablePanZoom={true}
+                            timeRange={timerange}
+                            onTimeRangeChanged={this.handleTimeRangeChange}
+                            onTrackerChanged={this.handleTrackerChanged}
+                            format="%b '%y"
+                            // timeAxisTickCount={5}
+                        >
+                            <ChartRow height = "180">
+                                <YAxis
+                                    id="O2"
+                                    label="O2"
+                                    min={croppedSeries.min("value")}
+                                    max={croppedSeries.max("value")}
+                                    width="60"
+                                    format=".2f"
+                                />
+                                <Charts>
+                                    <ScatterChart axis="O2" series={croppedSeries} style={style} />
+                                    <LineChart axis='O2' series = {croppedSeries} style={style} />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyleLite}
+                                        value={croppedSeries.max()}
+                                        label="Max"
+                                        position="right"
+                                    />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyleLite}
+                                        value={croppedSeries.min()}
+                                        label="Min"
+                                        position="right"
+                                    />
+                                    <Baseline
+                                        axis="O2"
+                                        style={baselineStyle}
+                                        value={croppedSeries.avg()}
+                                        label="Avg"
+                                        position="right"
+                                    />
+                                    {this.renderMarker()}
+                                </Charts>
+                            </ChartRow>
+                        </ChartContainer>
+                    </Resizable>
+                    );
+                }
+            }
+        )
+    }
+}
+
+const O2_Chart = new GetO2Data()
+
+export default O2_Chart

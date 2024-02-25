@@ -1,0 +1,133 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type ActuationMax @model {
+  Max: Float
+  Setup: String! @primaryKey(sortKeyFields: ["Variable"])
+  Variable: String!
+}
+
+type ActuationMin @model {
+  Min: Float
+  Setup: String! @primaryKey(sortKeyFields: ["Variable"])
+  Variable: String!
+}
+
+type CO2_Data {
+  CO2: Float
+  timestamp: String!
+}
+
+type CO2_MData {
+  Datas: [CO2_Data]
+  nextToken: String
+}
+
+type RACSensors @model {
+  CO2: Float
+  MAC: Int! @primaryKey(sortKeyFields: ["timestamp"])
+  O2: Float
+  atm_temperature: Float
+  conductivity: Float
+  humidity: Float
+  pH: Float
+  temperature: Float
+  timestamp: String!
+}
+
+type MultipleData {
+  Datas: [RACSensors]
+  nextToken: String
+}
+
+type Mutation {
+  addActuateMax(Max: Float, Setup: String!, Variable: String!): ActuationMax!
+  addActuateMin(Min: Float, Setup: String!, Variable: String!): ActuationMin!
+  addData(CO2: Float, MAC: Int!, O2: Float, atm_temperature: Float, conductivity: Float, humidity: Float, pH: Float, temperature: Float, timestamp: String!): RACSensors!
+  deleteActuateMax(Setup: String!, Variable: String!): ActuationMax!
+  deleteActuateMin(Setup: String!, Variable: String!): ActuationMin!
+  deleteData(MAC: Int!, timestamp: String!): RACSensors!
+  updateActuateMax(Max: Float, Setup: String!, Variable: String!): ActuationMax!
+  updateActuateMin(Min: Float, Setup: String!, Variable: String!): ActuationMin!
+  updateData(CO2: Float, MAC: Int!, O2: Float, atm_temperature: Float, conductivity: Float, humidity: Float, pH: Float, temperature: Float, timestamp: String!): RACSensors!
+}
+
+type O2_Data {
+  O2: Float
+  timestamp: String!
+}
+
+type O2_MData {
+  Datas: [O2_Data]
+  nextToken: String
+}
+
+type Query {
+  allData(limit: Int, nextToken: String): MultipleData!
+  allDataD(MAC: Int!, limit: Int, nextToken: String): MultipleData
+  allDatasByMAC(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): MultipleData!
+  allDatasByMAC_CO2(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): CO2_MData!
+  allDatasByMAC_O2(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): O2_MData!
+  allDatasByMAC_atm_temperature(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): atm_MData!
+  allDatasByMAC_conductivity(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): conductivity_MData!
+  allDatasByMAC_humidity(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): humidity_MData!
+  allDatasByMAC_pH(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): pH_MData!
+  allDatasByMAC_temperature(MAC: Int!, end: String, limit: Int, nextToken: String, start: String): temperature_MData!
+  getData(MAC: Int!, timestamp: String!): RACSensors
+}
+
+type atm_MData {
+  Datas: [atm_temperature_Data]
+  nextToken: String
+}
+
+type atm_temperature_Data {
+  atm_temperature: Float
+  timestamp: String!
+}
+
+type conductivity_Data {
+  conductivity: Float
+  timestamp: String!
+}
+
+type conductivity_MData {
+  Datas: [conductivity_Data]
+  nextToken: String
+}
+
+type humidity_Data {
+  humidity: Float
+  timestamp: String!
+}
+
+type humidity_MData {
+  Datas: [humidity_Data]
+  nextToken: String
+}
+
+type pH_Data {
+  pH: Float
+  timestamp: String!
+}
+
+type pH_MData {
+  Datas: [pH_Data]
+  nextToken: String
+}
+
+type temperature_Data {
+  temperature: Float
+  timestamp: String!
+}
+
+type temperature_MData {
+  Datas: [temperature_Data]
+  nextToken: String
+}

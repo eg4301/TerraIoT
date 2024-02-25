@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import PH_Chart from "../../charts/pH/index"
+import PH_Chart from "../../charts/PHChart";
 
 const PH = () => {
   return (

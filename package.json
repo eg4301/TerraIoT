@@ -31,7 +31,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@tremor/react": "^3.13.1",
     "amplify": "^0.0.11",
-    "aws-amplify": "^6.0.12",
+    "aws-amplify": "^6.0.17",
     "chart.js": "^3.9.1",
     "codegen": "^0.1.0",
     "formik": "^2.2.9",

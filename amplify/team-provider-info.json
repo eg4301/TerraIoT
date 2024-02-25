@@ -15,6 +15,9 @@
       "auth": {
         "terraiota0d9cbd0": {},
         "userPoolGroups": {}
+      },
+      "api": {
+        "terraiot": {}
       }
     }
   }

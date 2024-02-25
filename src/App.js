@@ -3,13 +3,12 @@ import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports'
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
-import { generateClient } from 'aws-amplify/api';
 
 // IMport React Packaages
 import React from 'react';
-import { Button } from '@aws-amplify/ui-react';
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Button from '@mui/material/Button'
 
 // Import scene constants
 import Topbar from "./scenes/global/Topbar";
@@ -41,11 +40,10 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 
 // Import Queries
-import * as queries from "./graphql/queries"
+// import { GetSensorData } from './api_query';
+
 
 Amplify.configure(awsExports);
-
-const data = {}
 
 function App({ signOut, user}) {
 
@@ -62,26 +60,6 @@ function App({ signOut, user}) {
   };
   const [clicked, setClicked] = useState();
 
-  const client = generateClient();
-
-  async function getSensorData() {
-    
-    const pH_data = await client.graphql({
-      query : queries.allDatasByMAC_pH,
-      // variables: { MAC : 1073446240, timestamp : "2024-01-18T14:42:35Z"}
-      variables: { MAC: 1, limit : 25 }
-   });
-  
-   const pHdata = []
-
-   for (let i = 0; i < pH_data.data.allDatasByMAC_pH.Datas.length; i++) {
-      pHdata.push([Date.parse(Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[0]), Object.values(pH_data.data.allDatasByMAC_pH.Datas[i])[1].toFixed(5)])
-   }
-   data['widget'] = [{"data" : {pHdata}, "display" : "absolute"},{},{},{},{}]
-  //  console.log(data.widget[0].data.pHdata)
-
-  }
-
   return (
     
     <ColorModeContext.Provider value={colorMode}>
@@ -90,13 +68,13 @@ function App({ signOut, user}) {
         <div className="app">
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />   
-            {/* <button onClick={getSensorData}>GetData</button>     */}
+            <Topbar setIsSidebar={setIsSidebar} />    
               <Tooltip title = 'Notifications' style = {{ position: "absolute", top: "27px", right: "230px" }} arrow>
                 <IconButton onClick={() => setClicked((prev) => !prev)}>
                   {clicked ? <NotificationsOffOutlinedIcon /> : <NotificationsOutlinedIcon/>}
                 </IconButton>
               </Tooltip>
+              {/* <Button variant="contained" color="secondary" size = 'large' onClick={GetSensorData}>Retrieve Data</Button> */}
               <Tooltip title = 'Theme Toggling' style={{ position: "absolute", top: "27px", right: "270px" }} arrow>
                 <IconButton  onClick={colorMode.toggleColorMode}>
                   {theme.palette.mode === "dark" ? (

@@ -13,15 +13,15 @@ import Baseline from "../components/Baseline";
 import Resizable from "../components/Resizable";
 import EventMarker from "../components/EventMarker"
 
-// Import humidity Data
-import { humidity_data } from "../api_query";
+// Import pH Data
+import { pH_data } from "../api_query";
 
-export function GethumidityData() {
-    // const [data, setData] = useState({'widget':[{'data':{'humidity':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]})
-    // const data = {'widget':[{'data':{'humidity':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
-    if (humidity_data.widget != undefined) {
-    const data = humidity_data
-    const points = data.widget[0].data.humidity
+export function GetPHData() {
+    // const [data, setData] = useState({'widget':[{'data':{'ph':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]})
+    // const data = {'widget':[{'data':{'ph':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
+    if (pH_data.widget != undefined) {
+    const data = pH_data
+    const points = data.widget[0].data.pH
     const series = new TimeSeries({
         columns: ["time", "value"],
         points
@@ -62,7 +62,7 @@ export function GethumidityData() {
     };
 
     return (
-        class humidity_Chart extends React.Component {
+        class PH_Chart extends React.Component {
             constructor(props) {
                 super(props);
                 this.state = {
@@ -99,7 +99,7 @@ export function GethumidityData() {
                     return (
                         <EventMarker
                             type="flag"
-                            axis="humidity"
+                            axis="pH"
                             event={this.state.trackerEvent}
                             column="value"
                             info={[{ label: "Anomaly", value: this.state.trackerValue }]}
@@ -113,7 +113,7 @@ export function GethumidityData() {
                     return (
                         <EventMarker
                             type="point"
-                            axis="humidity"
+                            axis="pH"
                             event={this.state.trackerEvent}
                             column="value"
                             markerLabel={this.state.trackerValue}
@@ -141,32 +141,32 @@ export function GethumidityData() {
                         >
                             <ChartRow height = "180">
                                 <YAxis
-                                    id="humidity"
-                                    label="humidity"
+                                    id="pH"
+                                    label="pH"
                                     min={croppedSeries.min("value")}
                                     max={croppedSeries.max("value")}
                                     width="60"
                                     format=".2f"
                                 />
                                 <Charts>
-                                    <ScatterChart axis="humidity" series={croppedSeries} style={style} />
-                                    <LineChart axis='humidity' series = {croppedSeries} style={style} />
+                                    <ScatterChart axis="pH" series={croppedSeries} style={style} />
+                                    <LineChart axis='pH' series = {croppedSeries} style={style} />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyleLite}
                                         value={croppedSeries.max()}
                                         label="Max"
                                         position="right"
                                     />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyleLite}
                                         value={croppedSeries.min()}
                                         label="Min"
                                         position="right"
                                     />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyle}
                                         value={croppedSeries.avg()}
                                         label="Avg"
@@ -183,8 +183,8 @@ export function GethumidityData() {
         )
     }
     else {
-    const data = {'widget':[{'data':{'humidity':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
-    const points = data.widget[0].data.humidity
+    const data = {'widget':[{'data':{'pH':[[1705588926000, 5.0000]]},'display':'absolute'},{},{},{},{}]}
+    const points = data.widget[0].data.pH
     const series = new TimeSeries({
         columns: ["time", "value"],
         points
@@ -225,7 +225,7 @@ export function GethumidityData() {
     };
 
     return (
-        class humidity_Chart extends React.Component {
+        class PH_Chart extends React.Component {
             constructor(props) {
                 super(props);
                 this.state = {
@@ -262,7 +262,7 @@ export function GethumidityData() {
                     return (
                         <EventMarker
                             type="flag"
-                            axis="humidity"
+                            axis="pH"
                             event={this.state.trackerEvent}
                             column="value"
                             info={[{ label: "Anomaly", value: this.state.trackerValue }]}
@@ -276,7 +276,7 @@ export function GethumidityData() {
                     return (
                         <EventMarker
                             type="point"
-                            axis="humidity"
+                            axis="pH"
                             event={this.state.trackerEvent}
                             column="value"
                             markerLabel={this.state.trackerValue}
@@ -304,32 +304,32 @@ export function GethumidityData() {
                         >
                             <ChartRow height = "180">
                                 <YAxis
-                                    id="humidity"
-                                    label="humidity"
+                                    id="pH"
+                                    label="pH"
                                     min={croppedSeries.min("value")}
                                     max={croppedSeries.max("value")}
                                     width="60"
                                     format=".2f"
                                 />
                                 <Charts>
-                                    <ScatterChart axis="humidity" series={croppedSeries} style={style} />
-                                    <LineChart axis='humidity' series = {croppedSeries} style={style} />
+                                    <ScatterChart axis="pH" series={croppedSeries} style={style} />
+                                    <LineChart axis='pH' series = {croppedSeries} style={style} />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyleLite}
                                         value={croppedSeries.max()}
                                         label="Max"
                                         position="right"
                                     />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyleLite}
                                         value={croppedSeries.min()}
                                         label="Min"
                                         position="right"
                                     />
                                     <Baseline
-                                        axis="humidity"
+                                        axis="pH"
                                         style={baselineStyle}
                                         value={croppedSeries.avg()}
                                         label="Avg"
@@ -347,6 +347,6 @@ export function GethumidityData() {
     }
 }
 
-const Humidity_Chart = new GethumidityData()
+const PH_Chart = new GetPHData()
 
-export default Humidity_Chart
+export default PH_Chart

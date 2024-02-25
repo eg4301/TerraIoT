@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
+import Button from '@mui/material/Button'
 import Header from "../../components/Header";
 import AirTempChart from "../../charts/AirTempChart";
 import CO2_Chart from "../../charts/CO2_Chart";
@@ -7,7 +8,8 @@ import O2_Chart from "../../charts/O2_Chart";
 import HumidityChart from "../../charts/HumidityChart";
 import WaterTempChart from "../../charts/WaterTempChart";
 import ConductivityChart from "../../charts/ConductivityChart";
-import GetpHData from "../../charts/pH";
+import PH_Chart from "../../charts/PHChart";
+import { GetSensorData } from "../../api_query";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -18,6 +20,7 @@ const Dashboard = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Button variant="contained" color="secondary" size = 'large' onClick={GetSensorData}>Retrieve Data</Button>
       </Box>
 
       {/* GRID & CHARTS */}
@@ -35,7 +38,7 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="20px"
             p="0 30px"
             display="flex "
             justifyContent="space-between"
@@ -60,7 +63,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <AirTempChart isDashboard={true} />
           </Box>
         </Box>
@@ -73,7 +76,7 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="20px"
             p="0 30px"
             display="flex "
             justifyContent="space-between"
@@ -98,7 +101,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <CO2_Chart isDashboard={true} />
           </Box>
         </Box>
@@ -136,7 +139,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <O2_Chart isDashboard={true} />
           </Box>
         </Box>
@@ -174,7 +177,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <HumidityChart isDashboard={true} />
           </Box>
         </Box>
@@ -212,7 +215,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <WaterTempChart isDashboard={true} />
           </Box>
         </Box>
@@ -250,7 +253,7 @@ const Dashboard = () => {
             <Box>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="20px 0 0 0">
             <ConductivityChart isDashboard={true} />
           </Box>
         </Box>
@@ -289,7 +292,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="0px 0 0 0">
-            <GetpHData isDashboard={true} />
+            <PH_Chart isDashboard={true} />
           </Box>
         </Box>
       </Box>
